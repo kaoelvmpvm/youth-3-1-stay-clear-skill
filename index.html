@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>青春不染色｜分支情境遊戲</title>
+  <style>
+    :root{
+      --bg1:#fff7d9; --bg2:#e9fff4; --bg3:#eaf2ff;
+      --card:#ffffff; --ink:#22312d; --muted:#65746f;
+      --main:#26a57b; --main-dark:#13705a; --accent:#ffb84c; --accent2:#6c7df7;
+      --main2:#dcfff1; --line:#d6ebe4; --warn:#fff2c4; --good:#e9ffe6; --soft:#f6fbf8;
+      --shadow:0 18px 40px rgba(24,91,72,.13);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,207,91,.34), transparent 28%),
+        radial-gradient(circle at 88% 14%, rgba(108,125,247,.20), transparent 26%),
+        radial-gradient(circle at 50% 96%, rgba(38,165,123,.22), transparent 32%),
+        linear-gradient(135deg,var(--bg1),var(--bg2) 48%,var(--bg3));
+      font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;
+      color:var(--ink);
+    }
+    .wrap{max-width:1040px;margin:0 auto;padding:26px 16px 42px;position:relative;}
+    .wrap:before,.wrap:after{content:"";position:fixed;border-radius:50%;filter:blur(1px);z-index:-1;opacity:.55}
+    .wrap:before{width:160px;height:160px;background:#ffe08a;left:-50px;top:90px}.wrap:after{width:220px;height:220px;background:#c9f7e5;right:-70px;bottom:20px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+    .brand{display:flex;align-items:center;gap:13px;}
+    .logo{
+      width:58px;height:58px;border-radius:20px;
+      background:linear-gradient(135deg,var(--main),#55d69f);
+      color:white;display:grid;place-items:center;font-weight:1000;
+      box-shadow:0 10px 22px rgba(38,165,123,.26);
+      transform:rotate(-4deg);
+    }
+    h1{font-size:30px;margin:0;letter-spacing:.05em;color:#153f35}.sub{font-size:14px;color:var(--muted);margin-top:4px}
+    .pill{font-size:13px;padding:9px 13px;border-radius:999px;background:#fff;border:1px solid #dceee8;color:#1f5d4e;font-weight:800;white-space:nowrap;box-shadow:0 8px 18px rgba(34,49,45,.06)}
+    .card{background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:1px solid rgba(214,235,228,.95);border-radius:28px;box-shadow:var(--shadow);padding:26px;margin-top:14px;position:relative;overflow:hidden;}
+    .card:before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:linear-gradient(90deg,var(--main),#7bdba9,var(--accent),var(--accent2));}
+    .topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px;}
+    .node{font-size:13px;color:#4d6760;font-weight:900;background:#f3fbf7;border:1px solid var(--line);border-radius:999px;padding:7px 10px}.progress{height:13px;background:#e8f2ee;border-radius:999px;overflow:hidden;min-width:220px;border:1px solid #d7e9e2}
+    .bar{height:100%;background:linear-gradient(90deg,var(--main),#ffca5c);width:0%;transition:.25s;border-radius:999px}
+    .scene-title{font-size:24px;font-weight:1000;margin:8px 0 12px;color:#174f42;display:flex;align-items:center;gap:8px}.scene-title:before{content:"🎮";font-size:24px}
+    .scene-text{font-size:19px;line-height:1.85;background:linear-gradient(180deg,#f8fffb,#f1fbf6);border:1px solid var(--line);border-left:8px solid var(--main);border-radius:20px;padding:20px;margin:14px 0 18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.65)}
+    .choices{display:grid;grid-template-columns:1fr;gap:13px;margin-top:12px;}
+    button{font-family:inherit;cursor:pointer;border:0}.choice{width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:22px;padding:17px 18px;font-size:17px;line-height:1.55;color:var(--ink);transition:.16s;display:flex;align-items:flex-start;gap:11px;box-shadow:0 8px 18px rgba(34,49,45,.045)}
+    .choice:hover{border-color:var(--main);transform:translateY(-2px) scale(1.005);box-shadow:0 14px 24px rgba(38,165,123,.15);background:#fcfffd}
+    .choice b{display:inline-grid;place-items:center;min-width:38px;height:38px;background:linear-gradient(135deg,var(--main2),#fff6cf);color:#17614f;border-radius:14px;padding:0 8px;margin-right:2px;font-weight:1000;border:1px solid #d0f1e2}.choice .ctext{flex:1}.choice .icon{font-size:24px;line-height:1.45}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{background:linear-gradient(135deg,var(--main),#22bf8b);color:#fff;border-radius:16px;padding:12px 17px;font-weight:900;font-size:15px;box-shadow:0 10px 20px rgba(38,165,123,.18)}.btn:hover{transform:translateY(-1px)}.btn.secondary{background:#eef8f4;color:#31594f;box-shadow:none}.btn.ghost{background:transparent;color:#31594f;border:1px solid var(--line);box-shadow:none}
+    .home{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch}.infoBox{background:linear-gradient(180deg,#f7fffb,#fff);border-radius:22px;padding:19px;border:1px solid var(--line)}
+    .infoBox h3{margin:0 0 8px;color:#174f42}.infoBox ul{margin:8px 0 0;padding-left:1.2em;line-height:1.9}.bigStart{font-size:18px;padding:15px 23px;border-radius:18px}.tagrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.tag{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:13px;color:#49645d;font-weight:800}
+    .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.resultBox{border:1px solid var(--line);border-radius:20px;padding:17px;background:#fff;box-shadow:0 8px 18px rgba(34,49,45,.04)}.resultBox h3{margin:0 0 10px;font-size:17px;color:#174f42}.path{font-size:22px;font-weight:1000;color:#17614f;background:linear-gradient(135deg,var(--main2),#fff3c8);display:inline-block;padding:9px 13px;border-radius:14px;margin-bottom:12px;border:1px solid #cdeee0}.cert{background:linear-gradient(135deg,var(--warn),#fff8df);border:1px solid #f0d891;text-align:center;font-size:20px;font-weight:1000;color:#7a5a00}.small{font-size:13px;color:var(--muted);line-height:1.6}.history{font-size:14px;color:var(--muted);margin-top:11px}.hidden{display:none!important}
+    .mascot{font-size:58px;line-height:1;margin-bottom:8px;filter:drop-shadow(0 8px 12px rgba(34,49,45,.08))}.home-title{font-size:28px;font-weight:1000;color:#174f42;margin:0 0 8px}.home-sub{color:#5f716c;line-height:1.7;margin:0 0 10px}
+
+    .scene-image-wrap{margin:12px 0 16px;border-radius:24px;overflow:hidden;border:1px solid rgba(214,235,228,.95);background:#eef8f4;box-shadow:0 14px 30px rgba(34,49,45,.09)}
+    .scene-image{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#eef8f4}
+    .result-hero{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start;margin-bottom:14px}
+    .trophy-card{display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#fff6c9,#ffffff);border:1px solid #f0d891;border-radius:24px;padding:14px;box-shadow:0 12px 24px rgba(122,90,0,.12)}
+    .trophy-img{width:100%;max-width:280px;border-radius:18px;display:block}
+    .trophy-note{font-size:13px;color:#7a5a00;font-weight:900;text-align:center;margin-top:8px}
+    .cert.pass{background:linear-gradient(135deg,#fff0a6,#fff9da);border-color:#e7c448}
+    .cert.retry{background:linear-gradient(135deg,#eef8f4,#ffffff);border-color:var(--line);color:#31594f}
+    @media(max-width:720px){.home,.result-grid,.result-hero{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}.pill{white-space:normal}.scene-text{font-size:17px}.choice{font-size:16px}h1{font-size:24px}.progress{min-width:140px}.card{padding:21px}.choice{padding:15px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand"><div class="logo">3-1</div><div><h1>青春不染色</h1><div class="sub">分支情境遊戲｜覺察與阻斷網路色情媒體</div></div></div>
+      <div class="pill">任務挑戰</div>
+    </header>
+
+    <main id="app"></main>
+  </div>
+
+<script>
+const sceneImages = {
+  S0: "images/scene_s0_start.png",
+  A1: "images/scene_a1_late_scroll_sleepy.png",
+  B1: "images/scene_b1_pause_and_notice.png",
+  C1: "images/scene_c1_ignore_friend_keep_scroll.png",
+  A2: "images/scene_a2_repeat_late_scroll.png",
+  AB2: "images/scene_ab2_find_triggers.png",
+  AC2: "images/scene_ac2_blame_friend_reflect.png",
+  BA2: "images/scene_ba2_clean_feed_put_phone_away.png",
+  BB2: "images/scene_bb2_willpower_not_enough.png",
+  BC2: "images/scene_bc2_algorithm_returns.png",
+  CA2: "images/scene_ca2_seek_trusted_support.png",
+  CB2: "images/scene_cb2_adjust_routine_protect_self.png",
+  CC2: "images/scene_cc2_stuck_in_old_pattern.png"
+};
+const trophyImage = "images/trophy_success_code_0407.png";
+const passPaths = new Set(["BAA", "BCA"]);
+
+const story = {
+  S0:{level:1,title:'起始情境',text:'睡前的你習慣滑 IG、抖音殺時間，結果演算法狂跳出性暗示訊息。本想說隨便看看，卻滑到停不下來。這時朋友還傳賴：「這個更刺激，你一定會想看的！」',choices:[
+    {key:'A',label:'點開看看：反正只是放鬆。',next:'A1',step:'點開看看'},
+    {key:'B',label:'等等，先冷靜：我最近是不是對這個有點上癮了？',next:'B1',step:'先停下來想想'},
+    {key:'C',label:'放生朋友：已讀不理會，繼續滑其他性暗示訊息。',next:'C1',step:'不回朋友繼續滑'}]},
+  A1:{level:2,title:'你點開了連結',text:'你一點開更停不下來，等你回神已經刷到半夜了。隔天上課你狂打瞌睡還被老師盯上。',choices:[
+    {key:"A'",label:'自我安慰：下次少看一點就好啦！',next:'A2',step:'告訴自己少看'},
+    {key:"B'",label:'自我檢討：找出「病因」，到底是多無聊才會一直滑？',next:'AB2',step:'觀察自己狀態'},
+    {key:"C'",label:'牽拖抓戰犯：都是那個雷包朋友亂傳連結害的！',next:'AC2',step:'怪朋友亂傳'}]},
+  A2:{level:3,title:'光說少看，還是破功',text:'雖然嘴上說「下次要少看」，但沒幾天又破功，一樣滑到半夜。你發現只靠嘴巴說說根本沒用。',choices:[
+    {key:"A''",label:'躺平放棄：算了啦，反正自己控制不了。',end:'AAA',step:'乾脆放棄'},
+    {key:"B''",label:'思考對策：取消追蹤、設手機使用時間鎖。',end:'AAB',step:'開始實際調整'},
+    {key:"C''",label:'任性放縱：乾脆繼續看更多，習慣就好。',end:'AAC',step:'看更多想麻痺'}]},
+  AB2:{level:3,title:'你抓到觸發點',text:'柯南上身！你發現自己只要半夜孤單覺得冷、無聊或壓力大時，就容易狂滑。抓到自己的「觸發點」了！',choices:[
+    {key:"A''",label:'替代活動：找別的事做，半夜不把手機放床邊。',end:'ABA',step:'安排替代活動'},
+    {key:"B''",label:'知易行懶：知道原因就好啦，懶得改，繼續滑。',end:'ABB',step:'知道原因但不改'},
+    {key:"C''",label:'鐵齒體質：相信我強大意志力，能壓得住慾望。',end:'ABC',step:'測試能否硬撐'}]},
+  AC2:{level:3,title:'甩鍋沒有解決問題',text:'你把錯全推給朋友，但其實就算他不傳，你自己也會忍不住去搜尋。甩鍋給別人根本解決不了問題啊。',choices:[
+    {key:"A''",label:'認清現實：好啦，其實是我自己愛看，我得負責。',end:'ACA',step:'承認需為選擇負責'},
+    {key:"B''",label:'繼續甩鍋：千錯萬錯都是別人的錯！',end:'ACB',step:'繼續怪別人'},
+    {key:"C''",label:'自欺欺人：把朋友封鎖，但還是繼續躲在棉被裡滑。',end:'ACC',step:'刪朋友不改習慣'}]},
+  B1:{level:2,title:'你踩了煞車',text:'你踩了煞車，發現自己最近的確被這些性暗示影音綁架，不但睡眠不足，上課還常常神遊、心情煩躁。',choices:[
+    {key:"A'",label:'毅然斷開：直接刪除與取消追蹤這些帳號。',next:'BA2',step:'刪除追蹤改做事'},
+    {key:"B'",label:'自信爆棚：我意志力超強好嗎？忍一下不看就好。',next:'BB2',step:'覺得意志力夠'},
+    {key:"C'",label:'緩兵之計：先把手機丟一旁，關掉訊息，之後再看看。',next:'BC2',step:'放下手機不處理來源'}]},
+  BA2:{level:3,title:'你開始阻斷來源',text:'你一波神操作：常按「不感興趣」、清空搜尋紀錄，晚上還把手機放抽屜內。幾天後，發現大腦終於清醒多了！',choices:[
+    {key:"A''",label:'繼續保持：如果還是卡關就找師長聊聊求助。',end:'BAA',step:'持續觀察求助'},
+    {key:"B''",label:'放飛自我：覺得對網路色情免疫了，不用再設防。',end:'BAB',step:'覺得沒問題不管'},
+    {key:"C''",label:'好奇發作：找回紀錄瀏覽，測試自己會不會再暈船。',end:'BAC',step:'測試重新看'}]},
+  BB2:{level:3,title:'只靠意志力破功',text:'白天自信滿滿「我絕對不看」，結果晚上一到，大腦還是控制不住手點開了。原來只靠「意志力」根本是都市傳說！',choices:[
+    {key:"A''",label:'認命找藥方：乖乖用 APP 鎖時間或設定阻擋工具。',end:'BBA',step:'改採具體方法'},
+    {key:"B''",label:'狂鑽牛角尖：覺得自己超爛、沒救了，陷入自責。',end:'BBB',step:'覺得太爛自責'},
+    {key:"C''",label:'自我催眠：哎呀，反正同學都在看，沒差啦！',end:'BBC',step:'告訴自己大家都會看'}]},
+  BC2:{level:3,title:'暫時放下還不夠',text:'暫時放下手機好像挺有用，但隔天一開滑，強大的演算法又把那些影片推給你，你再度被吸進黑洞裡。',choices:[
+    {key:"A''",label:'不裝死了：動手清掉那些帳號跟搜尋紀錄！',end:'BCA',step:'正式調整習慣'},
+    {key:"B''",label:'得過且過：這樣反覆也還過得去啦，先這樣就好。',end:'BCB',step:'覺得先這樣就好'},
+    {key:"C''",label:'視為日常：算了，這就是我的宿命，接受它吧。',end:'BCC',step:'接受這就是日常'}]},
+  C1:{level:2,title:'你沒有點朋友連結，但仍繼續滑',text:'你沒點朋友的連結，卻假裝沒事繼續刷自己的推薦片單。表面上裝得很乖，其實眼睛還是黏在誘惑內容上。',choices:[
+    {key:"A'",label:'誠實面對：好啦，承認我還是很想看，得想辦法處理。',next:'CA2',step:'承認吸引想辦法'},
+    {key:"B'",label:'鴕鳥心態：只要不是點別人傳的連結，自己滑就沒事。',next:'CB2',step:'只要不點開朋友傳的'},
+    {key:"C'",label:'本性難移：這叫青春期正常釋放，完全不用管它！',next:'CC2',step:'青春期本性藉口'}]},
+  CA2:{level:3,title:'你開始誠實面對',text:'卸下偽裝後，你承認自己已經有點被影響了，知道不能再這樣「滑」下去，總得做點什麼改變現狀。',choices:[
+    {key:"A''",label:'求助外援：跟信任的師長聊聊，以解決問題。',end:'CAA',step:'找信任資源談談'},
+    {key:"B''",label:'嘗試改變：試著調一下生活作息，不把手機帶上床。',end:'CAB',step:'試試調整作息'},
+    {key:"C''",label:'光說不練：知道歸知道，身體還是很誠實地繼續耍廢。',end:'CAC',step:'什麼都不做'}]},
+  CB2:{level:3,title:'你發現重點不是來源而是影響',text:'你還在糾結「來源是誰」，卻沒發現問題根本出在「你每天都在被演算法餵養這些內容」，根本是自欺欺人啊！',choices:[
+    {key:"A''",label:'速速回神：快醒醒，重點是你已經被綁架、受影響了！',end:'CBA',step:'回神自己被影響'},
+    {key:"B''",label:'繼續裝睡：反正不點連結就是好寶寶，不管啦。',end:'CBB',step:'裝睡避免面對'},
+    {key:"C''",label:'苟且偷安：那就搜尋其他「擦邊球」的影片來看。',end:'CBC',step:'找擦邊球的看'}]},
+  CC2:{level:3,title:'藉口讓情況更糟',text:'你一直催眠自己「這很正常啦」，但上課狂恍神、情緒越來越不安。「裝死不處理」其實只會讓情況更糟。',choices:[
+    {key:"A''",label:'勇敢面對：承認這真的很困擾，去找方法或求助。',end:'CCA',step:'承認困擾求助'},
+    {key:"B''",label:'強力壓抑：死命逼自己「絕對不要去想」！',end:'CCB',step:'強逼自己不要想'},
+    {key:"C''",label:'自生自滅：就這樣下去吧，繼續滑我的影片。',end:'CCC',step:'讓它繼續下去'}]}
+};
+const feedback = {
+AAA:['有想過「少看點」很讚！代表你覺察到被影響，這是練習拒絕的超棒起點喔！','躺平放棄太虧啦！快學幾招實用的 APP 封鎖大絕招，別讓演算法輕易打敗你！','重新接受關卡挑戰，邁向成功'],
+AAB:['能發現不對勁並果斷「退追蹤」，這波阻斷神操作超讚，自我管理能力點滿啦！','下次可以更早踩煞車喔！越早覺察並拒絕誘惑，就不會白白浪費寶貴的睡覺時間。','重新接受關卡挑戰，邁向成功'],
+AAC:['雖然最後逃避了，但你有意識到「看太多不好」，這份真實的自我覺察非常珍貴！','越看只會越空虛！如果自己拒絕不了，記得趕快找信任的大人求救，別硬撐喔！','重新接受關卡挑戰，邁向成功'],
+ABA:['精準抓出「想滑」的時機，還懂得找別的事轉移注意力，這波阻斷誘惑根本神操作！','轉移注意力很棒，若能直接刪除或封鎖那些誘惑帳號，從源頭拒絕就更無敵啦！','重新接受關卡挑戰，邁向成功'],
+ABB:['像柯南一樣抓到自己狂滑手機的「發病時機」，這份超強覺察力是打敗誘惑的關鍵！','知道原因卻不改太虧啦！趕緊動手退追蹤或設 APP 限制，把阻斷行動真正落實！','重新接受關卡挑戰，邁向成功'],
+ABC:['能抓到自己受誘惑的情境，還想試著對抗演算法，這份想拒絕控制的決心很帥氣！','單靠意志力硬撐容易破功！趕快學會用工具封鎖內容，才是最實在的阻斷大絕招。','重新接受關卡挑戰，邁向成功'],
+ACA:['不再甩鍋給朋友，勇敢覺察並承認是自己愛看，這種為自己負責的態度超帥氣！','認清現實後，下一步就是要學會果斷對雷包連結說「不」，狠狠切斷這些不良來源！','重新接受關卡挑戰，邁向成功'],
+ACB:['能發現朋友傳的連結有毒，代表你已經點滿了「辨識色情陷阱」的初步覺察力喔！','一直抓戰犯無法解決問題！試著覺察自己的看片習慣，把手機主控權拿回來吧！','重新接受關卡挑戰，邁向成功'],
+ACC:['果斷刪除亂傳連結的損友，展現超強防禦力，這是阻斷外部色情來源的完美第一步！','刪了朋友但自己還在看，這叫掩耳盜鈴啦！要勇敢覺察內心，把壞習慣一起刪掉！','重新接受關卡挑戰，邁向成功'],
+BAA:['停下思考、刪除追蹤、還懂監控狀態，這一條龍的覺察與阻斷神操作，根本模範生！','表現太完美啦！請繼續保持這份強大的拒絕力，別再讓壞演算法有機會再綁架你！','恭喜通關，邁向成功'],
+BAB:['第一時間覺察不對勁，馬上退追蹤斷開連結，保護自己的果斷阻斷力真的超級棒！','千萬別太有自信而放飛自我！演算法很狡猾，要隨時保持覺察，堅定拒絕不鬆懈喔！','重新接受關卡挑戰，邁向成功'],
+BAC:['一開始能敏銳覺察並成功退追蹤，證明你絕對有阻斷演算法、拒絕誘惑的強大實力！','好奇心會害死貓！別再回頭測試自己的底線，果斷拒絕到底，才不會又暈船陷進去。','重新接受關卡挑戰，邁向成功'],
+BBA:['破功後秒覺察盲點，火速改用 APP 等工具來阻斷，解決問題的行動力直接破表！','意志力是都市傳說啦！下次一覺察到誘惑，就直接用工具封鎖拒絕，省時又省力。','重新接受關卡挑戰，邁向成功'],
+BBB:['雖然失敗很嘔，但你一開始懂得「踩煞車思考」，這份覺察力就是拒絕誘惑的基石！','鑽牛角尖沒用！別自責了，趕快用工具阻斷演算法，勇敢對誘惑說不才是王道！','重新接受關卡挑戰，邁向成功'],
+BBC:['雖然最後找藉口，但一開始你有停下來思考自身受到的影響，這份覺察其實超難得！','別用「大家都在看」來自我催眠！要勇敢認清影響，鍛鍊拒絕爛內容的強大防護罩！','重新接受關卡挑戰，邁向成功'],
+BCA:['從放下手機到看破演算法，你動手清帳號找回主控權，成功落實阻斷與拒絕，超帥！','演算法超黏人！下次覺察誘惑時，記得快狠準退追蹤，直接拒絕才不會又被吸進去。','恭喜通關，邁向成功'],
+BCB:['覺察不對就「放下手機」，這招物理阻斷超讚！證明你已有拒絕誘惑的初步抵抗力。','治標也要治本！別裝死不管，趕快學會清空搜尋紀錄，把演算法源頭徹底阻斷掉吧！','重新接受關卡挑戰，邁向成功'],
+BCC:['雖然最後選擇躺平，但你曾停下思考並放下手機，這份覺察力證明你懂得保護自己！','別向爛內容妥協！重新喚醒你的覺察力，動手退追蹤，堅定對演算法的控制說不！','重新接受關卡挑戰，邁向成功'],
+CAA:['拒絕損友後，還能勇敢面對困擾並找大人求助，這份健康的覺察與行動力真的超棒！','下次提早踩煞車！一覺察被吸引就立刻滑走關掉，第一時間阻斷，不讓演算法得逞。','重新接受關卡挑戰，邁向成功'],
+CAB:['能拒絕損友，還誠實面對被吸引並調整作息來阻斷，這份自我覺察與行動力直接滿分！','調整作息很讚！若能順便清空紀錄並退追蹤，從源頭拒絕演算法推播，阻斷會更徹底！','重新接受關卡挑戰，邁向成功'],
+CAC:['雖沒行動，但你成功拒絕損友連結，並覺察自己被吸引，這份坦誠是學會阻斷的起點！','知道歸知道，還要動起來！快學幾招實用的 APP 封鎖法，用具體行動狠狠拒絕誘惑！','重新接受關卡挑戰，邁向成功'],
+CBA:['雖曾自欺欺人，但最終能看清盲點，覺察內容對自己的影響，成功阻斷並破除演算法！','別再找藉口騙自己啦！只要內容母湯就該果斷拒絕，提早覺察就能更快切斷不良影響。','重新接受關卡挑戰，邁向成功'],
+CBB:['雖逃避面對，但第一時間成功拒絕損友的色情連結，這波初階的阻斷防護力很讚喔！','別當鴕鳥啦！勇敢覺察「自己滑也不行」，誠實面對並果斷拒絕，把阻斷行動做到底！','重新接受關卡挑戰，邁向成功'],
+CBC:['雖想看擦邊球，但一開始成功對損友的色情連結說不，這份初步的拒絕與防禦力很讚！','看擦邊球照樣會被演算法綁架！快喚醒覺察力，對所有誘惑堅定說不，徹底把它阻斷！','重新接受關卡挑戰，邁向成功'],
+CCA:['雖曾自我催眠，但最後勇敢覺察影響並主動求助，這份決心阻斷誘惑的負責態度超讚！','別拿青春期當藉口！越早覺察負面影響，就能越快啟動拒絕與阻斷誘惑的強大防護罩。','重新接受關卡挑戰，邁向成功'],
+CCB:['雖死命壓抑無效，但成功拒絕了損友，並努力阻斷腦中誘惑，不想被控制的決心超棒！','死命壓抑太容易破功！快學用 APP 設限，落實具體的阻斷行動，才能輕鬆拒絕誘惑。','重新接受關卡挑戰，邁向成功'],
+CCC:['雖最後放給它爛，但起初確實已讀不回損友，這份拒絕色情誘惑的防禦意識很難得喔！','放給它爛太危險！快喚醒覺察力，若自己無法拒絕演算法，趕緊找大人求救幫忙阻斷！','重新接受關卡挑戰，邁向成功']
+};
+let current='home';
+let path=[];
+let steps=[];
+let runId=0;
+const app=document.getElementById('app');
+function displayKey(k){return String(k).replace(/[’']/g,'');}
+function displayRouteFromEnd(endKey){return String(endKey).replace(/^END_/,'').split('').join(' > ');}
+function displayRoute(){return path.map(displayKey).slice(-3).join(' > ');}
+function resetState(){path=[];steps=[];current='home';runId++;}
+function startChallenge(){resetState();go('S0');}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function renderHome(){resetState();app.innerHTML=`
+  <section class="card home">
+    <div>
+      <div class="mascot">🛡️</div>
+      <div class="home-title">青春不染色｜任務啟動</div>
+      <p class="home-sub">你將進入一個睡前滑手機的情境。每一步都會影響結局，請依照你的判斷做出選擇，看看自己能不能拿回手機主控權。</p>
+      <div class="scene-text">任務目標：覺察誘惑、看見影響、做出阻斷行動。</div>
+      <div class="actions"><button class="btn bigStart" onclick="startChallenge()">開始挑戰</button></div>
+      
+    </div>
+    <div class="infoBox">
+      <h3>通關提示</h3>
+      <ul>
+        <li>不要只靠意志力，具體工具更可靠。</li>
+        <li>退追蹤、清紀錄、APP 限制都屬於阻斷策略。</li>
+        <li>卡關時，找信任的師長或大人聊聊也是行動力。</li>
+      </ul>
+    </div>
+  </section>`;}
+function go(id){current=id;renderNode(id)}
+function choose(ch){
+  // 學生端只記錄 A/B/C，不記錄 A'、A'' 這類內部閱讀符號。
+  const displayChoice = displayKey(ch.key);
+  if(path.length >= 3){ path=[]; steps=[]; }
+  path.push(displayChoice);
+  steps.push(ch.step);
+  if(ch.next){go(ch.next)} else {renderEnd(ch.end)}
+}
+function renderNode(id){const n=story[id]; const percent=n.level===1?15:n.level===2?50:82; app.innerHTML=`
+  <section class="card">
+    <div class="topline"><div class="node">任務進度｜第 ${n.level} 步</div><div class="progress"><div class="bar" style="width:${percent}%"></div></div></div>
+    <div class="scene-title">${esc(n.title)}</div>
+    <div class="scene-image-wrap"><img class="scene-image" src="${sceneImages[id] || ''}" alt="${esc(n.title)}"></div>
+    <div class="scene-text">${esc(n.text)}</div>
+    <div class="choices">
+      ${n.choices.map((c,i)=>`<button class="choice" onclick='choose(${JSON.stringify(c).replace(/'/g,"&#39;")})'><b>${String.fromCharCode(65+i)}</b><span class="icon">${['📱','🧠','🛑'][i]||'⭐'}</span><span class="ctext">${esc(c.label)}</span></button>`).join('')}
+    </div>
+    
+    <div class="actions"><button class="btn secondary" onclick="renderHome()">回首頁</button><button class="btn ghost" onclick="startChallenge()">重新開始</button></div>
+  </section>`;}
+function renderEnd(endKey){
+  const fb=feedback[endKey]||['','',''];
+  const route=displayRouteFromEnd(endKey);
+  const actionList=steps.slice(-3).map((s,i)=>`${i+1}. ${esc(s)}`).join('<br>');
+  const isPass = passPaths.has(endKey);
+  const trophyBlock = isPass ? `
+    <div class="trophy-card">
+      <div>
+        <img class="trophy-img" src="${trophyImage}" alt="成功通關獎盃，青春密碼 0407">
+        <div class="trophy-note">通關密碼：0407</div>
+      </div>
+    </div>` : '';
+  app.innerHTML=`
+  <section class="card">
+    <div class="topline"><div class="node">挑戰完成</div><div class="progress"><div class="bar" style="width:100%"></div></div></div>
+    <div class="scene-title">你的挑戰結果</div>
+    <div class="result-hero">
+      <div>
+        <div class="path">${esc(route)}</div>
+        <div class="result-grid">
+          <div class="resultBox"><h3>① 你的因應行動</h3><p>${actionList}</p></div>
+          <div class="resultBox"><h3>② 你表現好的地方</h3><p>${esc(fb[0])}</p></div>
+          <div class="resultBox"><h3>③ 你可以這樣做會更棒</h3><p>${esc(fb[1])}</p></div>
+          <div class="resultBox cert ${isPass ? 'pass' : 'retry'}"><h3>④ 關卡認證</h3><p>${esc(fb[2])}</p></div>
+        </div>
+      </div>
+      ${trophyBlock}
+    </div>
+    <div class="actions"><button class="btn" onclick="startChallenge()">再挑戰一次</button><button class="btn secondary" onclick="renderHome()">回首頁</button></div>
+  </section>`;
+}
+renderHome();
+</script>
+</body>
+</html>
