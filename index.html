@@ -55,8 +55,6 @@
     .infoBox h3{margin:0 0 8px;color:#174f42}.infoBox ul{margin:8px 0 0;padding-left:1.2em;line-height:1.9}.bigStart{font-size:18px;padding:15px 23px;border-radius:18px}.tagrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.tag{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:13px;color:#49645d;font-weight:800}
     .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.resultBox{border:1px solid var(--line);border-radius:20px;padding:17px;background:#fff;box-shadow:0 8px 18px rgba(34,49,45,.04)}.resultBox h3{margin:0 0 10px;font-size:17px;color:#174f42}.path{font-size:22px;font-weight:1000;color:#17614f;background:linear-gradient(135deg,var(--main2),#fff3c8);display:inline-block;padding:9px 13px;border-radius:14px;margin-bottom:12px;border:1px solid #cdeee0}.cert{background:linear-gradient(135deg,var(--warn),#fff8df);border:1px solid #f0d891;text-align:center;font-size:20px;font-weight:1000;color:#7a5a00}.small{font-size:13px;color:var(--muted);line-height:1.6}.history{font-size:14px;color:var(--muted);margin-top:11px}.hidden{display:none!important}
     .mascot{font-size:58px;line-height:1;margin-bottom:8px;filter:drop-shadow(0 8px 12px rgba(34,49,45,.08))}.home-title{font-size:28px;font-weight:1000;color:#174f42;margin:0 0 8px}.home-sub{color:#5f716c;line-height:1.7;margin:0 0 10px}
-
-```
 .scene-image-wrap{margin:12px 0 16px;border-radius:24px;overflow:hidden;border:1px solid rgba(214,235,228,.95);background:#eef8f4;box-shadow:0 14px 30px rgba(34,49,45,.09)}
 .scene-image{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#eef8f4}
 .result-hero{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start;margin-bottom:14px}
@@ -65,9 +63,8 @@
 .trophy-note{font-size:13px;color:#7a5a00;font-weight:900;text-align:center;margin-top:8px}
 .cert.pass{background:linear-gradient(135deg,#fff0a6,#fff9da);border-color:#e7c448}
 .cert.retry{background:linear-gradient(135deg,#eef8f4,#ffffff);border-color:var(--line);color:#31594f}
+.cert-slogan{margin:8px 0 0;font-size:18px;font-weight:1000;color:#7a5a00}
 @media(max-width:720px){.home,.result-grid,.result-hero{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}.pill{white-space:normal}.scene-text{font-size:17px}.choice{font-size:16px}h1{font-size:24px}.progress{min-width:140px}.card{padding:21px}.choice{padding:15px}}
-```
-
   </style>
 </head>
 <body>
@@ -76,11 +73,7 @@
       <div class="brand"><div class="logo">3-1</div><div><h1>3-1 青春練功 - 不染色</h1><div class="sub">分支情境遊戲｜覺察與阻斷網路色情媒體</div></div></div>
       <div class="pill">任務挑戰</div>
     </header>
-
-```
 <main id="app"></main>
-```
-
   </div>
 
 <script>
@@ -206,12 +199,13 @@ function renderHome(){resetState();app.innerHTML=`
       <div class="actions"><button class="btn bigStart" onclick="startChallenge()">開始挑戰</button></div>
     </div>
     <div class="infoBox">
-      <h3>通關提示</h3>
-      <ul>
-        <li>不要只靠意志力，具體工具更可靠。</li>
-        <li>退追蹤、清紀錄、APP 限制都屬於阻斷策略。</li>
-        <li>卡關時，找信任的師長或大人聊聊也是行動力。</li>
-      </ul>
+      <h3>遊戲說明</h3>
+      <p>
+        遊戲共有三個情境階段，每一階段都要做出一個選擇。<br>
+        你的選擇會影響後續情境，最後形成不同的行動路徑與結果。<br>
+        完成三次選擇後，系統會整理你的因應行動，並提供回饋與建議。<br>
+        部分路徑可以成功通關；未通關時，可重新挑戰並嘗試不同選擇。
+      </p>
     </div>
   </section>`;}
 function go(id){current=id;renderNode(id)}
@@ -256,7 +250,7 @@ function renderEnd(endKey){
           <div class="resultBox"><h3>① 你的因應行動</h3><p>${actionList}</p></div>
           <div class="resultBox"><h3>② 你表現好的地方</h3><p>${esc(fb[0])}</p></div>
           <div class="resultBox"><h3>③ 你可以這樣做會更棒</h3><p>${esc(fb[1])}</p></div>
-          <div class="resultBox cert ${isPass ? 'pass' : 'retry'}"><h3>④ 關卡認證</h3><p>${esc(fb[2])}</p></div>
+          <div class="resultBox cert ${isPass ? 'pass' : 'retry'}"><h3>④ 關卡認證</h3><p>${esc(fb[2])}</p>${isPass ? '<p class="cert-slogan">【零色零情】</p>' : ''}</div>
         </div>
       </div>
       ${trophyBlock}
